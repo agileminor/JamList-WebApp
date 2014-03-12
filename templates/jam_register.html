@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Register</title>
+
+<link rel="stylesheet" href="../static/jamlist.css" type="text/css">
+</head>
+<body>
+<span class="title">JamList</span><br>
+<div class="undertitle">
+<br>
+<form method="post">
+<table>
+<tbody>
+<tr>
+<td class="label">
+Username
+</td>
+<td>
+<input name="username" value="{{username}}" type="text"></td>
+<td class="error">
+{{error_username}}
+</td>
+</tr>
+<tr>
+<td class="label">
+Password
+</td>
+<td>
+<input name="password" value="" type="password"></td>
+<td class="error">
+{{error_password}}
+</td>
+</tr>
+<tr>
+<td class="label">
+Verify Password
+</td>
+<td>
+<input name="verify" value="" type="password"></td>
+<td class="error">
+{{error_verify}}
+</td>
+</tr>
+<tr>
+<td class="label">
+Email (optional)
+</td>
+<td>
+<input name="email" value="{{email}}" type="text"></td>
+<td class="error">
+{{error_email}}
+</td>
+</tr>
+</tbody>
+</table>
+<input value="Register" type="submit">
+</form>
+<br>
+</div>
+</body></html>
