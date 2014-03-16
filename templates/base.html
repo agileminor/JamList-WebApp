@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>JamList</title>
+
+<link rel="stylesheet" href="../static/jamlist.css" type="text/css">
+</head>
+<body>
+    <div id = "page">
+        <div id = "header">
+            {% block header %}
+            <span class="page_header_left">JamList</span>
+            <span class="page_header_right">{{username}}
+                <a href="/logout">Logout</a>
+            </span>
+            {% endblock %}
+        </div>
+        <div id="left_content_float">
+            {% block side_menu %}
+            generic menu
+            {% endblock %}
+        </div>
+        <div id="right_content_float">
+            {% block content %}
+            generic content
+            {% endblock %}
+        </div>
+    </div>
+</body></html>
