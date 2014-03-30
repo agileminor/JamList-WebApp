@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+    {% block side_menu %}
+        <a class = "generic_text" href = "/newsong">Add New Song</a>
+        {% endblock %}
+
+        {% block content %}
+        <br>
+<form method="post">
+<table>
+<tbody>
+<tr>
+<td class="label">
+Title
+</td>
+<td>
+<input name="song_title" value="{{song_title}}" type="text" id = "song_title_key"></td>
+<td class="error">
+{{error_song_title}}
+</td>
+</tr>
+<tr>
+<td class="label">
+Key
+</td>
+<td>
+<input name="song_key" value="" type="text" id = "song_title_key"></td>
+<td class="error">
+{{error_song_key}}
+</td>
+</tr>
+<tr>
+<td class="label">
+Lyrics
+</td>
+<td>
+    <textarea name="song_lyrics" rows = "10" columns = "50" id = "song_lyrics"></textarea></td>
+<td class="error">
+{{error_song_lyrics}}
+</td>
+</tr>
+<tr>
+<td class="label">
+Notes
+</td>
+<td>
+    <textarea name="song_notes" rows = "10" columns = "50" id = "song_notes"></textarea></td>
+<td class="error">
+{{error_song_notes}}
+</td>
+</tr>
+</tbody>
+</table>
+<input value="Save song" type="submit">
+</form>
+<br>
+        {% endblock %}
+
