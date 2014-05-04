@@ -14,6 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+#
+# items that need to be updated tagged with CHECK
+#
 import cgi
 from google.appengine.api import memcache
 import re
@@ -25,8 +29,10 @@ import hmac
 import random
 import string
 import logging
+from GenSec import return_secret
 
-SECRET = "thisissecret" # put this somewhere else
+#SECRET = "thisissecret" # use for testing only
+SECRET = return_secret() # test to see if local import works, do not add GenSec to git
 from google.appengine.ext import db
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
@@ -74,29 +80,36 @@ class Song(db.Model):
     name = db.StringProperty(required = True)
     song_key = db.StringProperty(required = False)
     lyrics = db.TextProperty(required = False)
-    created = db.DateTimeProperty(auto_now_add = True)
+    notes = db.TextProperty(required = False)
     public = db.StringProperty(required = True)
+    created = db.DateTimeProperty(auto_now_add = True)
    
     @classmethod
-    def by_id(cls, uid):
-        return Song.get_by_id(uid, parent = users_key())
+    def by_id(cls, uid,user):
+        return Song.get_by_id(uid, parent = user.key()) # need to change to use current users id as parent
 
     @classmethod
-    def by_name(cls, name):
-        u = Song.all().filter('name =', name).get()
+    def by_title(cls, song_title):
+        u = Song.all().filter('title =', song_title).get()
         return u
 
     @classmethod
-    def register(cls, name, user, public = "False"):
-        return Song(parent = user, # CHECK proper way to specify parent is another object or a string i.e. name
+    #def register(cls, name,key,lyrics,notes, user):
+    def register(cls, name,key,lyrics,notes, user, public = "False"):
+        return Song(parent = user.key(), # CHECK proper way to specify parent is another object or a string i.e. name
                     name = name,
+                    song_key = key,
+                    lyrics = lyrics,
+                    notes = notes,
                     public = public)
+
 
 class User(db.Model):
     username = db.StringProperty(required = True)
     pw_hash = db.StringProperty(required = True)
     created = db.DateTimeProperty(auto_now_add = True)
-    song_ids = db.ListProperty(str, indexed = False, default = [])
+    email = db.StringProperty(required = False)
+    song_ids = db.ListProperty(int, indexed = False, default = [])
 
     @classmethod
     def by_id(cls, uid):
@@ -121,7 +134,8 @@ class User(db.Model):
         return User(parent = users_key(),
                     username = username,
                     pw_hash = pw_hash,
-                    email = email)
+                    email = email,
+                    song_ids = [])
 
     @classmethod
     def login(cls, username, pw):
@@ -154,21 +168,22 @@ class MainHandler(webapp2.RequestHandler):
 
     def read_secure_cookie(self, name):
         cookie_val = self.request.cookies.get(name)
-#        return cookie_val and check_secure_val(cookie_val)
-        return check_secure_val(cookie_val)
+        return cookie_val and check_secure_val(cookie_val)
+#        return check_secure_val(cookie_val)
 
     def login(self, user):
         self.set_secure_cookie('user_id', str(user.key().id())) # CHECK need to add cache here somehow
 
     def logout(self):
         self.response.headers.add_header('Set-Cookie', 'user_id=; Path=/')
+        self.user = None
 
     def initialize(self, *a, **kw):
-        logging.error("in initialize")
+#        logging.error("in initialize")
         webapp2.RequestHandler.initialize(self, *a, **kw)
         uid = self.read_secure_cookie('user_id')
-#        self.user = uid and User.by_id(int(uid))
-        self.user = User.by_id(int(uid))
+        self.user = uid and User.by_id(int(uid))
+#        self.user = User.by_id(int(uid))
 
         if self.request.url.endswith('.json'):
             self.format = 'json'
@@ -268,14 +283,101 @@ class ListHandler(MainHandler):
     def get(self):
         if self.user:
             username = self.user.username
-            self.render('main.html', username = username)
+            self.current_songs = []
+            for song_id in self.user.song_ids:
+                self.current_songs.append(Song.by_id(int(song_id), self.user))
+            self.render('main.html', username = username, current_songs  = self.current_songs)
         else:
             self.redirect('/')
+class NewSongHandler(MainHandler):
+    def get(self):
+        if self.user:
+            username = self.user.username
+            songlist = self.user.song_ids
+            self.render('newsong.html',username = username, songlist = songlist)
+    def post(self):
+        is_error = False # CHECK add error checking for song inputs
+        self.song_title = self.request.get('song_title')
+        self.song_key = self.request.get('song_key')
+        self.song_lyrics = self.request.get('song_lyrics')
+        self.song_notes = self.request.get('song_notes')
+        if is_error:
+            pass
+        else:
+            self.done()
+    def done(self):
+        proposed_song = Song.register(self.song_title, self.song_key, self.song_lyrics, self.song_notes,self.user)
+        proposed_song.put()
+        new_song = Song.by_title(self.song_title)
+        song_id = proposed_song.key().id()
+        memcache.set("song_"+str(song_id),proposed_song)
+        self.user.song_ids.append(song_id)
+        self.user.put()
+        memcache.set("user_"+self.user.username,self.user)
+        self.redirect('/main')
+class SongHandler(MainHandler):
+    def get(self, song_id):
+        if self.user:
+            username = self.user.username
+            logging.error("found user")
+            logging.error(self.user)
+            current_song = memcache.get(str("song_"+str(song_id)))
+            if not current_song:
+                logging.error('song not found in cache')
+                current_song = Song.get_by_id(int(song_id))
+                if not current_song:
+                    logging.error('song not found in database')
+                    self.redirect('/main')
+            if int(song_id) not in self.user.song_ids:
+                logging.error('song not found in users songs, id = %s' % song_id)
+                self.redirect('/main')
+            self.render('song.html', username = username, current_song  = current_song)
+        else:
+            logging.error("no user")
+            self.redirect('/')
+class EditSongHandler(MainHandler):
+    def get(self, song_id):
+        if self.user:
+            username = self.user.username
+            current_song = memcache.get(str("song_"+str(song_id)))
+            if not current_song:
+                logging.error('song not found in cache')
+                current_song = Song.get_by_id(int(song_id))
+                if not current_song:
+                    logging.error('song not found in database')
+                    self.redirect('/main')
+            if int(song_id) not in self.user.song_ids:
+                logging.error('song not found in users songs, id = %s' % song_id)
+                self.redirect('/main')
+            self.current_song = current_song    
+            self.render('editsong.html',username = username, current_song = current_song)
+        else:
+            self.redirect('/')
+    def post(self,song_id):
+        is_error = False # CHECK add error checking for song inputs
+        current_song = memcache.get(str("song_"+str(song_id)))
+        current_song.name = self.request.get('song_title')
+        current_song.name = self.request.get('song_title')
+        current_song.song_key = self.request.get('song_key')
+        current_song.lyrics = self.request.get('song_lyrics')
+        current_song.notes = self.request.get('song_notes')
+        if is_error:
+            pass
+        else:
+            self.done(current_song)
+    def done(self,current_song):
+        current_song.put()
+        memcache.set("song_"+str(current_song.key().id()),current_song)
+        self.redirect('/main')
+
 app = webapp2.WSGIApplication([('/', MainHandler),
                                 ('/register',SignupHandler),
                                 ('/login',LoginHandler),
                                 ('/logout',LogoutHandler),
                                 ('/main',ListHandler),
+                                ('/newsong',NewSongHandler),
+                                (r'/(\d+)',SongHandler),
+                                (r'/_edit(\d+)',EditSongHandler),
                                ],
                                debug=True)
 app.run()
