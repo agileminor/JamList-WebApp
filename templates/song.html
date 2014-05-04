@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+    {% block side_menu %}
+        <a class = "generic_text" href = "/newsong">Add New Song</a>
+        <br>
+        <a class = "generic_text" href = "/main">Back to Song List</a>
+        <br>
+        <a class = "generic_text" href = "/_edit{{current_song.key().id()}}">Edit Song</a>
+    {% endblock %}
+        {% block content %}
+        <table >
+        <tr>
+            <td id = "song_title" > {{current_song.name}}</td>
+            <td id = "song_key"> {{current_song.song_key}} </td>
+        </tr>
+        </table>
+        <div>
+            {{current_song.lyrics}}
+        </div>
+        <div>
+            {{current_song.notes}}
+        </div>
+        {% endblock %}
+
