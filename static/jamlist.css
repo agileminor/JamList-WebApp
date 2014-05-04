@@ -43,7 +43,7 @@ div#header {
 div#left_content_float {
     width:250px;
     float: left;
-    margin:1% 0 1% -110px;
+    margin:2% 0 1% -110px;
     height:500px;
 }
 div#content {
@@ -55,10 +55,35 @@ div#content {
 div#right_content_float {
     width:500px;
     float: right;
+    margin:2% 0 1% -110px;
     min-height:500px;
     _height:500px;
 }
 .generic_text {
     font-family: poor richard,Helvetica,sans-serif;
 }
+
+textarea#song_lyrics {
+	width: 600px;
+	height: 120px;
+	border: 3px solid #cccccc;
+	padding: 5px;
+}
+textarea#song_notes {
+	width: 600px;
+	height: 120px;
+	border: 3px solid #cccccc;
+	padding: 5px;
+}
+textarea#song_title_key {
+	border: 3px solid #cccccc;
+	padding: 5px;
+}
+td#song_title {
+        width: 480px;
+}
+td#song_key {
+        width: 10px;
+}
+
 
