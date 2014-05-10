@@ -384,7 +384,7 @@ class EditSongHandler(MainHandler):
 
 class DeleteSongHandler(MainHandler):
     def get(self, song_id):
-        logging.error("in delete song")
+        #logging.error("in delete song")
         if self.user:
             username = self.user.username
             #logging.error("found user")
