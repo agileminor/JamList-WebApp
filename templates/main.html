@@ -6,10 +6,27 @@
         <table >
         {% for song in current_songs %}
         <tr>
-            <td id = "song_lyric" > <a class = "generic_text" href = "/{{song.key().id()}}">{{song.name}}</a></td>
+            <td id = "song_title" > <a class = "generic_text" href = "/{{song.key().id()}}">{{song.name}}</a></td>
             <td id = "song_key"> {{song.song_key}} </td>
+            <td id = "song_delete" ><button type="button" onclick="Delete_Song({{song.key().id()}})">Delete</button> </td>
         </tr>
         {% endfor %}
-        </table>
+    </table>
+<script>
+function Delete_Song(song_id)
+{
+    var delete_link = "/_delete" + song_id;
+
+var r=confirm("Are you sure you want to delete this song?");
+if (r==true)
+{
+    window.location.assign(delete_link)
+  }
+else
+  {
+  }
+}
+</script>
+    
         {% endblock %}
 

@@ -119,13 +119,14 @@ class User(db.Model):
     def by_name(cls, username):
         u = memcache.get("user_" + username)
         if not u:
-            logging.error("cache miss in by_name for " + username)
+            #logging.error("cache miss in by_name for " + username)
             u = User.all().filter('username =', username).get()
             if u:
-                logging.error("db hit after cache miss in by_name for " + username)
+                #logging.error("db hit after cache miss in by_name for " + username)
                 memcache.set("user_"+username,u)
             else:
-                logging.error("db miss after cache miss in by_name for " + username)
+                pass
+                #logging.error("db miss after cache miss in by_name for " + username)
         return u
 
     @classmethod
@@ -139,7 +140,7 @@ class User(db.Model):
 
     @classmethod
     def login(cls, username, pw):
-        logging.error("checking login for " + username)
+        #logging.error("checking login for " + username)
         u = cls.by_name(username)
         if u and valid_pw(username, pw, u.pw_hash):
             return u 
@@ -230,7 +231,7 @@ class LoginHandler(MainHandler):
 
 class LogoutHandler(MainHandler):
     def get(self):
-            logging.error("in logout")
+            #logging.error("in logout")
             self.logout()
             self.redirect("/")
 class SignupHandler(MainHandler):
@@ -319,21 +320,26 @@ class SongHandler(MainHandler):
     def get(self, song_id):
         if self.user:
             username = self.user.username
-            logging.error("found user")
-            logging.error(self.user)
-            current_song = memcache.get(str("song_"+str(song_id)))
+            #logging.error("found user")
+            current_song = memcache.get(str("song_"+str(song_id)))# this works, unless memcache reset
             if not current_song:
-                logging.error('song not found in cache')
-                current_song = Song.get_by_id(int(song_id))
+                #logging.error('song not found in cache')
+                current_song = Song.get_by_id(int(song_id),self.user.key())# CHECK this doesn't work
+                if current_song:
+                    memcache.set("song_"+str(song_id),current_song)
                 if not current_song:
-                    logging.error('song not found in database')
+                    #logging.error('song not found in database')
+                    pass
+            if current_song:
+                if int(song_id) in self.user.song_ids:
+                    self.render('song.html', username = username, current_song  = current_song)
+                else:
+                    #logging.error('song not found in users songs, id = %s' % song_id)
                     self.redirect('/main')
-            if int(song_id) not in self.user.song_ids:
-                logging.error('song not found in users songs, id = %s' % song_id)
+            else:
                 self.redirect('/main')
-            self.render('song.html', username = username, current_song  = current_song)
         else:
-            logging.error("no user")
+            #logging.error("no user")
             self.redirect('/')
 class EditSongHandler(MainHandler):
     def get(self, song_id):
@@ -341,16 +347,22 @@ class EditSongHandler(MainHandler):
             username = self.user.username
             current_song = memcache.get(str("song_"+str(song_id)))
             if not current_song:
-                logging.error('song not found in cache')
-                current_song = Song.get_by_id(int(song_id))
+                #logging.error('song not found in cache')
+                current_song = Song.get_by_id(int(song_id),self.user.key())
+                if current_song:
+                    memcache.set("song_"+str(song_id),current_song)
                 if not current_song:
-                    logging.error('song not found in database')
+                    #logging.error('song not found in database')
+                    pass
+            if current_song:
+                if int(song_id) in self.user.song_ids:
+                    #logging.error('song not found in users songs, id = %s' % song_id)
+                    self.current_song = current_song    
+                    self.render('editsong.html',username = username, current_song = current_song)
+                else:
                     self.redirect('/main')
-            if int(song_id) not in self.user.song_ids:
-                logging.error('song not found in users songs, id = %s' % song_id)
+            else:
                 self.redirect('/main')
-            self.current_song = current_song    
-            self.render('editsong.html',username = username, current_song = current_song)
         else:
             self.redirect('/')
     def post(self,song_id):
@@ -370,6 +382,38 @@ class EditSongHandler(MainHandler):
         memcache.set("song_"+str(current_song.key().id()),current_song)
         self.redirect('/main')
 
+class DeleteSongHandler(MainHandler):
+    def get(self, song_id):
+        logging.error("in delete song")
+        if self.user:
+            username = self.user.username
+            #logging.error("found user")
+            current_song = memcache.get(str("song_"+str(song_id)))
+            if not current_song: # CHECK - change to make redirect at end, in case of fall through
+                #logging.error('song not found in cache')
+                current_song = Song.get_by_id(int(song_id), self.user.key())
+                if current_song:
+                    memcache.set("song_"+str(song_id),current_song)
+                if not current_song:
+                    #logging.error('song not found in database')
+                    pass
+            if current_song:
+                if int(song_id) in self.user.song_ids:
+                    memcache.delete("song_"+str(song_id)) # delete song from cache CHECK does this need to validate that song is in cache?
+                    self.user.song_ids.remove(int(song_id)) # update User to remove song id
+                    current_song.delete()  # delete song from database
+                    self.user.put() # update user in database
+                    memcache.set("user_"+self.user.username,self.user) # update user in cache
+                    # CHECK - should I add these updated song/user to the classmethods?
+                else:
+                    #logging.error('song not found in users songs, id = %s' % song_id)
+                    self.redirect('/main')
+            else:
+                self.redirect('/main')
+            self.redirect('/main')
+        else:
+            #logging.error("no user")
+            self.redirect('/')
 app = webapp2.WSGIApplication([('/', MainHandler),
                                 ('/register',SignupHandler),
                                 ('/login',LoginHandler),
@@ -378,6 +422,7 @@ app = webapp2.WSGIApplication([('/', MainHandler),
                                 ('/newsong',NewSongHandler),
                                 (r'/(\d+)',SongHandler),
                                 (r'/_edit(\d+)',EditSongHandler),
+                                (r'/_delete(\d+)',DeleteSongHandler),
                                ],
                                debug=True)
 app.run()

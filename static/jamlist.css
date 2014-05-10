@@ -80,10 +80,13 @@ textarea#song_title_key {
 	padding: 5px;
 }
 td#song_title {
-        width: 480px;
+        width: 400px;
 }
 td#song_key {
         width: 10px;
+}
+td#song_delete {
+        width: 50px;
 }
 
 
