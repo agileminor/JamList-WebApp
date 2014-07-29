@@ -5,6 +5,11 @@
         <a class = "generic_text" href = "/main">Back to Song List</a>
         <br>
         <a class = "generic_text" href = "/_edit{{current_song.key().id()}}">Edit Song</a>
+        <br>
+        <br>
+        <button type="button" onclick="fontSmaller()">Smaller</button>
+        <br>
+        <button type="button" onclick="fontLarger()">Larger</button>
     {% endblock %}
         {% block content %}
         <table >
@@ -13,11 +18,72 @@
             <td id = "song_key"> {{current_song.song_key}} </td>
         </tr>
         </table>
-        <div>
+        <div id = "song_lyrics">
             {{current_song.lyrics}}
         </div>
         <div>
             {{current_song.notes}}
         </div>
+<script>
+function fontLarger()
+{
+    font_size = document.getElementById("song_lyrics").style.fontSize
+    switch(font_size) {
+    case "xx-small": 
+        document.getElementById("song_lyrics").style.fontSize="x-small";
+        break;
+    case "x-small":
+        document.getElementById("song_lyrics").style.fontSize="small";
+        break;
+    case "small":
+        document.getElementById("song_lyrics").style.fontSize="medium";
+        break;
+    case "medium":
+        document.getElementById("song_lyrics").style.fontSize="large";
+        break;
+    case "large":
+        document.getElementById("song_lyrics").style.fontSize="x-large";
+        break;
+    case "x-large":
+        document.getElementById("song_lyrics").style.fontSize="xx-large";
+        break;
+    case "xx-large":
+        document.getElementById("song_lyrics").style.fontSize="xx-large";
+        break;
+    default : 
+        document.getElementById("song_lyrics").style.fontSize="medium";
+    }
+}
+function fontSmaller()
+{
+    font_size = document.getElementById("song_lyrics").style.fontSize
+    switch(font_size) {
+    case "xx-large":
+        document.getElementById("song_lyrics").style.fontSize="x-large";
+        break;
+    case "x-small":
+        document.getElementById("song_lyrics").style.fontSize="xx-small";
+        break;
+    case "xx-small":
+        document.getElementById("song_lyrics").style.fontSize="xx-small";
+        break;
+    case "small":
+        document.getElementById("song_lyrics").style.fontSize="x-small";
+        break;
+    case "medium":
+        document.getElementById("song_lyrics").style.fontSize="small";
+        break;
+    case "large":
+        document.getElementById("song_lyrics").style.fontSize="medium";
+        break;
+    case "x-large":
+        document.getElementById("song_lyrics").style.fontSize="large";
+        break;
+    default: 
+        document.getElementById("song_lyrics").style.fontSize="medium";
+    }
+}
+</script>
+        
         {% endblock %}
 
