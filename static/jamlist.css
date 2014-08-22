@@ -88,5 +88,8 @@ td#song_key {
 td#song_delete {
         width: 50px;
 }
+td#song_placeholder {
+        width: 50px;
+}
 
 
