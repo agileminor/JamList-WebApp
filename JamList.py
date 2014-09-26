@@ -368,7 +368,7 @@ class SongHandler(MainHandler):
             current_song = memcache.get(str("song_"+str(song_id)))  # this works, unless memcache reset
             if not current_song:
                 #logging.error('song not found in cache')
-                current_song = Song.get_by_id(int(song_id), self.user.key())  # CHECK this doesn't work
+                current_song = Song.get_by_id(int(song_id), self.user.key())  # CHECK this doesn't work - should this be Song.by_id instead of Song.get_by_id?
                 if current_song:
                     memcache.set("song_"+str(song_id), current_song)
                 if not current_song:
@@ -394,7 +394,7 @@ class EditSongHandler(MainHandler):
             current_song = memcache.get(str("song_"+str(song_id)))
             if not current_song:
                 #logging.error('song not found in cache')
-                current_song = Song.get_by_id(int(song_id), self.user.key())
+                current_song = Song.get_by_id(int(song_id), self.user.key()) # should this be Song.by_id instead of Song.get_by_id?
                 if current_song:
                     memcache.set("song_"+str(song_id), current_song)
                 if not current_song:
