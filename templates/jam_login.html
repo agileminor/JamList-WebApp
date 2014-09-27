@@ -1,15 +1,6 @@
-<!DOCTYPE html>
-<html><head>
-<meta content="text/html; charset=utf-8" http-equiv="content-type"><title>Login</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="../static/jamlist.css" type="text/css">
-</head>
-<body>
-    <div class=container>
-<span class="title">JamList</span><br>
-<div class="undertitle">
-<br>
+{% extends "login_register_base.html" %}
+
+    {% block form %}
 <form role=form method="post">
     <div class="row">
         <div class="col-md-4"> Username</div>
@@ -27,10 +18,12 @@
     </div>
 </div>
 </div>
-
-     {{error_message}}
+<div class="row">
+    <div class="col-md-4"></div>
+        <div class="col-md-8">
+            {{error_message}}
+        </div>
+</div>
 <input value="Login" type="submit">
 </form>
-</div>
-</div>
-</body></html>
+    {% endblock %}

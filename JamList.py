@@ -40,6 +40,9 @@ template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir),
                                autoescape=True)
 
+#def escape_html(s):
+#    return cgi.escape(s, quote=True)
+
 
 def hash_str(s):
     return hmac.new(SECRET, s).hexdigest()
@@ -242,12 +245,11 @@ class LoginHandler(MainHandler):
                 username_error = "That's not a valid username."
             else:
                 username_error = ""
-                self.username = escape_html(self.username)
+#                self.username = escape_html(self.username)
             if not check_password:
                 password_error = "That wasn't a valid password."
             else:
                 password_error = ""
-                self.password = escape_html(self.password)
 
         else:
             # need to extract user id, check password
