@@ -11,28 +11,25 @@
 <div class="undertitle">
 <br>
 <form role=form method="post">
-<table>
-<tbody>
-    <tr>
-        <td class = label> Username
-        </td>
-<td>
-    <div class=form-group>
-        <input name="username" value="{{username}}" type="text" class=form-control></td>
+    <div class="row">
+        <div class="col-md-4"> Username</div>
+        <div class="col-md-8">
+        <div class=form-group>
+            <input name="username" value="{{username}}" type="text" class=form-control>
+        </div>
+    </div>
 </div>
-</tr>
-<tr class = "label"> 
-    <td>Password</td>
-    <td>
-    <div class=form-group>
-        <input name="password" value="" type="password" class=form-control></td>
+<div class="row">
+<div class="col-md-4">Password</div>
+        <div class="col-md-8">
+        <div class=form-group>
+        <input name="password" value="" type="password" class=form-control>
+    </div>
 </div>
-<tr class = "error">
-    <td> {{error_message}}</td>
-</tr>
-</tbody>
-</table>
-<button class=btn btn-default value="Login" type="submit">
+</div>
+
+     {{error_message}}
+<input value="Login" type="submit">
 </form>
 </div>
 </div>
