@@ -1,32 +1,39 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html><head>
-<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Login</title>
-
+<meta content="text/html; charset=utf-8" http-equiv="content-type"><title>Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="../static/jamlist.css" type="text/css">
 </head>
 <body>
+    <div class=container>
 <span class="title">JamList</span><br>
 <div class="undertitle">
 <br>
-<form method="post">
+<form role=form method="post">
 <table>
 <tbody>
     <tr>
         <td class = label> Username
         </td>
 <td>
-    <input name="username" value="{{username}}" type="text"></td>
+    <div class=form-group>
+        <input name="username" value="{{username}}" type="text" class=form-control></td>
+</div>
 </tr>
 <tr class = "label"> 
     <td>Password</td>
     <td>
-        <input name="password" value="" type="password"></td>
+    <div class=form-group>
+        <input name="password" value="" type="password" class=form-control></td>
+</div>
 <tr class = "error">
     <td> {{error_message}}</td>
 </tr>
 </tbody>
 </table>
-<input value="Login" type="submit">
+<button class=btn btn-default value="Login" type="submit">
 </form>
+</div>
 </div>
 </body></html>
