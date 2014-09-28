@@ -85,10 +85,10 @@ td.song_title {
 td.song_key {
         width: 10px;
 }
-td#song_delete {
+td.song_delete {
         width: 50px;
 }
-td#song_placeholder {
+td.song_placeholder {
         width: 50px;
 }
 
