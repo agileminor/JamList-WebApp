@@ -5,13 +5,13 @@
         {% block content %}
         <table >
         <tr>
-            <td id = "song_title" >Title</td>
-            <td id = "song_key">Key</td>
+            <td class = "song_title" >Title</td>
+            <td class = "song_key">Key</td>
         </tr>
         {% for song in current_songs %}
         <tr>
-            <td id = "song_title" > <a class = "generic_text" href = "/{{song.key().id()}}">{{song.name}}</a></td>
-            <td id = "song_key"> {{song.song_key}} </td>
+            <td class = "song_title" > <a class = "generic_text" href = "/{{song.key().id()}}">{{song.name}}</a></td>
+            <td class = "song_key"> {{song.song_key}} </td>
             <td id = "song_delete" ><button type="button" onclick="Delete_Song({{song.key().id()}})">Delete</button> </td>
         </tr>
         {% endfor %}

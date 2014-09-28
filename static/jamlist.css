@@ -75,14 +75,14 @@ textarea#song_notes {
 	border: 3px solid #cccccc;
 	padding: 5px;
 }
-textarea#song_title_key {
+textarea.song_title_key {
 	border: 3px solid #cccccc;
 	padding: 5px;
 }
-td#song_title {
+td.song_title {
         width: 400px;
 }
-td#song_key {
+td.song_key {
         width: 10px;
 }
 td#song_delete {
