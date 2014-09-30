@@ -1,4 +1,8 @@
 {% extends "login_register_base.html" %}
+    {% block title %}
+    <title>Register</title>
+    {% endblock %}
+
     {% block form %}
 
     <form role=form method="post">
@@ -8,7 +12,9 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <input name="username" value="{{username}}" type="text">
+                    <label for="input_username">
+                        <input name="username" value="{{username}}" type="text" class="form-control" id="input_username">
+                    </label>
                 </div>
             </div>
         </div>
@@ -24,7 +30,9 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <input name="password" value="" type="password">
+                    <label for="input_password">
+                        <input name="password" value="" type="password" class="form-control" id="input_password">
+                    </label>
                 </div>
             </div>
         </div>
@@ -40,7 +48,9 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <input name="verify" value="" type="password">
+                    <label for="verify_password">
+                        <input name="verify" value="" type="password" class="form-control" id="verify_password">
+                    </label>
                 </div>
             </div>
         </div>
@@ -56,7 +66,9 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <input name="email" value="{{email}}" type="text">
+                    <label for="input_email">
+                        <input name="email" value="{{email}}" type="text" class="form-control" id="input_email">
+                    </label>
                 </div>
             </div>
         </div>

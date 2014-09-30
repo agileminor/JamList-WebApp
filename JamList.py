@@ -173,7 +173,10 @@ class User(db.Model):
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        self.render("jam_front.html")
+        if self.user:
+            self.redirect('/main')
+        else:
+            self.render("jam_front.html")
 
     def write(self, *a, **kw):
         self.response.out.write(*a, **kw)
@@ -327,6 +330,7 @@ class ListHandler(MainHandler):
             self.current_songs = []
             for song_id in self.user.song_ids:
                 self.current_songs.append(Song.by_id(int(song_id), self.user))
+            self.current_songs = sorted(self.current_songs, key=lambda song: song.name) # CHECK - add ability to sort by either name or key then name
             self.render('main.html', username=username, current_songs=self.current_songs)
         else:
             self.redirect('/')
