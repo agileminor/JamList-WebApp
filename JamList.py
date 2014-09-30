@@ -343,7 +343,7 @@ class NewSongHandler(MainHandler):
         is_error = False  # CHECK add error checking for song inputs
         self.song_title = self.request.get('song_title')
         self.song_key = self.request.get('song_key')
-        self.song_lyrics = escape_html(self.request.get('song_lyrics')).replace('\n','<br>')
+        self.song_lyrics = escape_html(self.request.get('song_lyrics')).replace('\n','<br>').replace(' ','&nbsp;')
         self.song_notes = self.request.get('song_notes')
         if is_error:
             pass
