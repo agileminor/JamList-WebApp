@@ -40,8 +40,8 @@ template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir),
                                autoescape=True)
 
-#def escape_html(s):
-#    return cgi.escape(s, quote=True)
+def escape_html(s):
+    return cgi.escape(s, quote=True)
 
 
 def hash_str(s):
@@ -343,7 +343,7 @@ class NewSongHandler(MainHandler):
         is_error = False  # CHECK add error checking for song inputs
         self.song_title = self.request.get('song_title')
         self.song_key = self.request.get('song_key')
-        self.song_lyrics = self.request.get('song_lyrics')
+        self.song_lyrics = escape_html(self.request.get('song_lyrics')).replace('\n','<br>')
         self.song_notes = self.request.get('song_notes')
         if is_error:
             pass

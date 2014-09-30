@@ -17,10 +17,12 @@
             <td class = "song_title" > {{current_song.name}}</td>
             <td class = "song_key"> {{current_song.song_key}} </td>
         </tr>
-        </table>
+    </table>
+    <br>
         <div id = "song_lyrics">
-            {{current_song.lyrics}}
+            {{current_song.lyrics|safe}}
         </div>
+        <br>
         <div>
             {{current_song.notes}}
         </div>
