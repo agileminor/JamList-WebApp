@@ -3,16 +3,17 @@
         <a class = "generic_text" href = "/newsong">Add New Song</a>
         {% endblock %}
         {% block content %}
-        <table >
+        <table class="table table-striped">
         <tr>
             <td class = "song_title" >Title</td>
             <td class = "song_key">Key</td>
+            <td></td>
         </tr>
         {% for song in current_songs %}
         <tr>
             <td class = "song_title" > <a class = "generic_text" href = "/{{song.key().id()}}">{{song.name}}</a></td>
-            <td class = "song_key"> {{song.song_key}} </td>
-            <td class = "song_delete" ><button type="button" onclick="Delete_Song({{song.key().id()}})">Delete</button> </td>
+            <td class = "song_key"> {{song.song_key + "&nbsp;&nbsp;"|safe }} </td>
+            <td class = "song_delete" ><button type="button" class="btn btn-default" onclick="Delete_Song({{song.key().id()}})">Delete</button> </td>
         </tr>
         {% endfor %}
     </table>
