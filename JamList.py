@@ -424,7 +424,8 @@ class EditSongHandler(MainHandler):
         current_song.name = self.request.get('song_title')
         current_song.name = self.request.get('song_title')
         current_song.song_key = self.request.get('song_key')
-        current_song.lyrics = self.request.get('song_lyrics')
+        current_song.lyrics = escape_html(self.request.get('song_lyrics')).replace('\n','<br>').replace(' ','&nbsp;')
+#        current_song.lyrics = self.request.get('song_lyrics')
         current_song.notes = self.request.get('song_notes')
         if is_error:
             pass

@@ -18,7 +18,7 @@ Key
 {{error_song_key}}
 Lyrics
     <div class=form-group>
-        <textarea name="song_lyrics" rows = "10" columns = "50" id = "song_lyrics">{{current_song.lyrics}}</textarea>
+        <textarea name="song_lyrics" rows = "10" columns = "50" id = "song_lyrics">{{current_song.lyrics.replace("<br>","\n").replace("&nbsp;"," ")}}</textarea>
     </div>
 {{error_song_lyrics}}
 Notes
