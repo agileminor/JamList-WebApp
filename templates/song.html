@@ -1,25 +1,24 @@
 {% extends "base.html" %}
-    {% block side_menu %}
-        <a class = "generic_text" href = "/newsong">Add New Song</a>
-        <br>
-        <a class = "generic_text" href = "/main">Back to Song List</a>
-        <br>
-        <a class = "generic_text" href = "/_edit{{current_song.key().id()}}">Edit Song</a>
-        <br>
-        <br>
-        <button type="button" class="btn btn-default" onclick="fontSmaller()">Smaller</button>
-        <br>
-        <button type="button" class="btn btn-default" onclick="fontLarger()">Larger&nbsp;&nbsp;</button>
+{% block side_menu %}
+<ul class="nav nav-sidebar">
+    <li><a class = "generic_text" href = "/newsong">Add New Song</a>
+    <li> <a class = "generic_text" href = "/main">Back to Song List</a></li>
+    <li><a class = "generic_text" href = "/_edit{{current_song.key().id()}}">Edit Song</a></li>
+    <li><button type="button" class="btn btn-default" onclick="fontSmaller()">Smaller</button></li>
+    <li><button type="button" class="btn btn-default" onclick="fontLarger()">Larger&nbsp;&nbsp;</button></li>
+</ul>
     {% endblock %}
-        {% block content %}
-        <table >
-        <tr>
-            <td class = "song_title" > {{current_song.name}}</td>
-            <td class = "song_key"> {{current_song.song_key}} </td>
-        </tr>
-    </table>
+    {% block content %}
+    <div class="row placeholders">
+        <div class="col-md-9 placeholder">
+            {{current_song.name}}
+        </div>
+        <div class="col-md-3 placeholder">
+            {{current_song.song_key}} 
+        </div>
+    </div>
     <br>
-        <div id = "song_lyrics">
+        <div id="song_lyrics">
             {{current_song.lyrics|safe}}
         </div>
         <br>

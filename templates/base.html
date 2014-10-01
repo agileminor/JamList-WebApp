@@ -6,24 +6,45 @@
 <link rel="stylesheet" href="../static/jamlist.css" type="text/css">
 </head>
 <body>
-    <div id = "page">
-        <div id = "header">
+        
             {% block header %}
-            <span class="page_header_left">JamList</span>
-            <span class="page_header_right">{{username}}
-                <a href="/logout">Logout</a>
-            </span>
-            {% endblock %}
+            <nav class="navbar navbar-default " role="navigation">
+            <div class="container-fluid">
+                <div class="navbar=header ">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </button>
+    
+            
+    <p class="navbar-text "><b>JamList</b></p>
+</div>
+        <div class="navbar-collapse collapse ">
+          <ul class="nav navbar-nav navbar-right">
+
+              <li><p class="navbar-text"><b>{{username}}</b></p></li>
+              <li><a href="/logout"><b>Logout</b></a></li>
+          </ul>
+      </div>
         </div>
-        <div id="left_content_float">
+        </nav>
+            {% endblock %}
+        
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-3 col-md-2 sidebar">
             {% block side_menu %}
             generic menu
             {% endblock %}
-        </div>
-        <div id="right_content_float">
+                    </div>
+                    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             {% block content %}
             generic content
             {% endblock %}
         </div>
     </div>
+</div>
 </body></html>

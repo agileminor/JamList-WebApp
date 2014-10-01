@@ -1,6 +1,8 @@
 {% extends "base.html" %}
-    {% block side_menu %}
-        <a class = "generic_text" href = "/newsong">Add New Song</a>
+{% block side_menu %}
+        <ul class="nav nav-sidebar">
+            <li><a class = "generic_text" href = "/newsong">Add New Song</a></li>
+        </ul>
         {% endblock %}
         {% block content %}
         <table class="table table-striped">

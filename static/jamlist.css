@@ -61,6 +61,16 @@ div#right_content_float {
 .generic_text {
     font-family: poor richard,Helvetica,sans-serif;
 }
+div.generic_text_large {
+  font-size: large;
+  font-weight: bold;
+    font-family: poor richard,Helvetica,sans-serif;
+}
+.generic_text_large {
+  font-size: 15pt;
+  font-weight: bold;
+    font-family: poor richard,Helvetica,sans-serif;
+}
 
 textarea#song_lyrics {
 	width: 600px;
