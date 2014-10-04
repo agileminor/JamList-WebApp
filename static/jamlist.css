@@ -5,27 +5,36 @@
   font-size: 75pt;
   font-weight: bold;
   font-style: normal;
-  font-family: poor richard,Helvetica,sans-serif;
+  font-family: Helvetica,sans-serif;
+}
+.small_title {
+  top: 35%;
+  position: absolute;
+  left: 40%;
+  font-size: 25pt;
+  font-weight: bold;
+  font-style: normal;
+  font-family: Helvetica,sans-serif;
 }
 .undertitle {
   font-size: larger;
   position: absolute;
   top: 50%;
   left: 40%;
-  font-family: poor richard,Helvetica,sans-serif;
+  font-family: Helvetica,sans-serif;
 }
 .error {
   color: red;
 }
 .page_header_left {
   float: left;
-  font-family: poor richard,Helvetica,sans-serif;
+  font-family: Helvetica,sans-serif;
   font-size: 25pt;
   font-weight: bold;
 }
 .page_header_right {
   float: right;
-  font-family: poor richard,Helvetica,sans-serif;
+  font-family: Helvetica,sans-serif;
   font-size: 25pt;
   font-weight: bold;
 }
@@ -59,17 +68,17 @@ div#right_content_float {
     _height:500px;
 }
 .generic_text {
-    font-family: poor richard,Helvetica,sans-serif;
+    font-family: Helvetica,sans-serif;
 }
 div.generic_text_large {
   font-size: large;
   font-weight: bold;
-    font-family: poor richard,Helvetica,sans-serif;
+    font-family: Helvetica,sans-serif;
 }
 .generic_text_large {
   font-size: 15pt;
   font-weight: bold;
-    font-family: poor richard,Helvetica,sans-serif;
+    font-family: Helvetica,sans-serif;
 }
 
 textarea#song_lyrics {
