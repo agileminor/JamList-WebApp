@@ -74,7 +74,7 @@ EMAIL_RE = re.compile(r'^[\S]+@[\S]+\.[\S]+$')
 
 
 def valid_email(email):
-    return not email or EMAIL_RE.match(email)
+    return email or EMAIL_RE.match(email)
 
 
 def users_key(group='default'):
@@ -330,7 +330,7 @@ class ListHandler(MainHandler):
             self.current_songs = []
             for song_id in self.user.song_ids:
                 self.current_songs.append(Song.by_id(int(song_id), self.user))
-            self.current_songs = sorted(self.current_songs, key=lambda song: song.name) # CHECK - add ability to sort by either name or key then name
+            self.current_songs = sorted(self.current_songs, key=lambda song: song.name.lower()) # CHECK - add ability to sort by either name or key then name
             self.render('main.html', username=username, current_songs=self.current_songs)
         else:
             self.redirect('/')
