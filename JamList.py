@@ -104,6 +104,7 @@ class Song(db.Model):
     lyrics = db.TextProperty(required=False)
     notes = db.TextProperty(required=False)
     public = db.StringProperty(required=True)
+    song_list = db.StringProperty(required=False)
     created = db.DateTimeProperty(auto_now_add=True)
 
     @classmethod
