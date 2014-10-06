@@ -1,20 +1,5 @@
 #!/usr/bin/env python
 #
-# Copyright 2007 Google Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-
 #
 # items that need to be updated tagged with CHECK
 #
@@ -31,10 +16,10 @@ import random
 import string
 import logging
 from GenSec import return_secret
+from google.appengine.ext import db
 
 #SECRET = "thisissecret"  # use for testing only
 SECRET = return_secret()  # test to see if local import works, do not add GenSec to git
-from google.appengine.ext import db
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir),
@@ -49,10 +34,12 @@ def hash_str(s):
 
 
 def make_secure_val(s):
+    """ Only used for cookies. Password are hashed and stored with individual random salt. """
     return "%s|%s" % (s, hash_str(s))
 
 
 def check_secure_val(h):
+    """ Only used for cookies. Passwords are hashed and stored with individual random salt. """
     val = h.split("|")[0]
     if h == make_secure_val(val):
         return val
@@ -74,7 +61,7 @@ EMAIL_RE = re.compile(r'^[\S]+@[\S]+\.[\S]+$')
 
 
 def valid_email(email):
-    return email or EMAIL_RE.match(email)
+    return email and EMAIL_RE.match(email)
 
 
 def users_key(group='default'):
@@ -109,11 +96,11 @@ class Song(db.Model):
 
     @classmethod
     def by_id(cls, uid, user):
-        return Song.get_by_id(uid, parent=user.key())  # need to change to use current users id as parent
+        return Song.get_by_id(uid, parent=user.key())  
 
     @classmethod
     def by_title(cls, song_title):
-        u = Song.all().filter('title =', song_title).get()
+        u = Song.all().filter('name =', song_title).get()
         return u
 
     @classmethod
@@ -422,7 +409,6 @@ class EditSongHandler(MainHandler):
     def post(self, song_id):
         is_error = False # CHECK add error checking for song inputs
         current_song = memcache.get(str("song_"+str(song_id)))
-        current_song.name = self.request.get('song_title')
         current_song.name = self.request.get('song_title')
         current_song.song_key = self.request.get('song_key')
         current_song.lyrics = escape_html(self.request.get('song_lyrics')).replace('\n','<br>').replace(' ','&nbsp;')
