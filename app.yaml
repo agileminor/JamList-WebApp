@@ -10,6 +10,7 @@ handlers:
 
 - url: .*
   script: JamList.app
+  secure: always
 
 libraries:
 - name: webapp2

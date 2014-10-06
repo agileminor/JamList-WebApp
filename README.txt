@@ -10,9 +10,9 @@ Changes from v1.0:
 - added capability to shrink/enlarge lyric text
 - improved handling of lyric input for displaying linebreaks, etc.
 - general appearance improvements
+- added https support
 
 Functionality to be added:
-- https support
 - password reset capability
 - sorting song list based on title or key
 - Google Glass support
@@ -21,6 +21,5 @@ Functionality to be added:
 - ability to share songs (may have copyright concerns)
 
 Although this app is something I am creating for the use of myself and friends who regularly haul paper jam lists around to jams, it is also an experimental webapp to experiment with Google App Engine using WebApp2, Jinja2 and Python.
-Code will remain very rough for foreseeable future.
 
 _IG_
