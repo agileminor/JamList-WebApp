@@ -75,7 +75,7 @@ def make_salt(length=5):
 
 def make_pw_hash(name, pw, salt=None):
     if not salt:
-        salt = make_salt(48)
+        salt = make_salt()
     h = hashlib.sha256(name + pw + salt).hexdigest()
     return '%s,%s' % (salt, h)
 
